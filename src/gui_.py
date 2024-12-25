@@ -32,7 +32,6 @@ def start_operation():
     img =pull_main(file_path,outpath)
     factor = estb_main(img)
     agr1,*agr2 = fuzz_rule_main(factor)
-    img = atwt_main(img,outpath,agr1)
     img = sgbnr_main(img,outpath,agr2[0],agr2[1],agr2[2],agr2[3],agr2[4])
     shared.循环次数 = 1
 
