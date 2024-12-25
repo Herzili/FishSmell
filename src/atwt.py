@@ -14,8 +14,7 @@ def atwt_main(img,outpath,threshold=0.03):
     image = img_as_float(image)
     denoised_image = wavelet_denoise(image, wavelet=wtbase, threshold_factor=threshold ,level=2, iterations = 迭代轮数)
     # 导出图像
-    io.imsave(fr"{outpath}\output\atwt.tif", denoised_image.astype(np.float32))
-    print('G')
+#    io.imsave(fr"{outpath}\output\atwt.tif", denoised_image.astype(np.float32))
     return denoised_image
 
 # 小波变换去噪

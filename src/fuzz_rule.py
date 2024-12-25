@@ -9,6 +9,7 @@ def fuzz_rule_main(l_var):
     # 亮度方差（0，20） 大于20的可以不用处理了。
     if (LVAR > 17):
         print('\033[31m别勉强自己，这张图其实可以不用处理了(-  -)`')
+        shared.循环次数 = 2
     l_var = ctrl.Antecedent(np.arange(0, 21, 1), 'l_var')
     #atwt的阈值（0，0.1）
     t = ctrl.Consequent(np.arange(0, 0.081, 0.001), 't')

@@ -6,7 +6,7 @@ import shared
 #传入拉伸之后的图片
 def  hsv_var(block):
     """
-    计算给定区块的三个通道的方差和明度平均
+    计算给定区块的三个通道的方差和明度平均值
     """
     # 将RGB区块转换为HSV
     hsv_block = color.rgb2hsv(block)

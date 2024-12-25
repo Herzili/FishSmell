@@ -15,8 +15,7 @@ def selective_gaussian_blur(image, mask, kernel_size=5):
     return result
 
 def apply_sgbnr_to_lab(image, ab_mask_value,l_mask_value,kernel_l,kernel_a,kernel_b):
-    print("正在SGBNR降噪...")
-    shared.log = "正在SGBNR降噪..."
+    print(f"正在SGBNR降噪...轮数为{shared.循环次数}")
     # 1. 转换RGB图像到Lab色彩空间
     lab_image = rgb2lab(image)
     # 2. 提取L、a和b通道
@@ -28,17 +27,18 @@ def apply_sgbnr_to_lab(image, ab_mask_value,l_mask_value,kernel_l,kernel_a,kerne
     l_mask = generate_constant_gray_mask(image, l_mask_value)
     # 3. 对L、a、b通道分别应用选择性高斯模糊降噪
 
-    shared.log = "正在SGBNR降噪...L通道"
-    denoised_l = selective_gaussian_blur(l_channel, l_mask,  kernel_l)
-    shared.log = "正在SGBNR降噪...a通道"
-    denoised_a = selective_gaussian_blur(a_channel, ab_mask,  kernel_a)
-    shared.log = "正在SGBNR降噪...b通道"
-    denoised_b = selective_gaussian_blur(b_channel, ab_mask,  kernel_b)
+    for i in range(shared.循环次数):
+        print("正在SGBNR降噪...L通道")
+        l_channel = selective_gaussian_blur(l_channel, l_mask,  kernel_l*(i+1))
+        print("正在SGBNR降噪...a通道")
+        a_channel = selective_gaussian_blur(a_channel, ab_mask,  kernel_a*(i+1))
+        print("正在SGBNR降噪...b通道")
+        b_channel = selective_gaussian_blur(b_channel, ab_mask,  kernel_b*(i+1))
     
     # 4. 将降噪后的L、a、b通道替换原图中的通道
-    lab_image[:, :, 0] = denoised_l
-    lab_image[:, :, 1] = denoised_a
-    lab_image[:, :, 2] = denoised_b
+    lab_image[:, :, 0] = l_channel
+    lab_image[:, :, 1] = a_channel
+    lab_image[:, :, 2] = b_channel
     
     # 5. 转换回RGB图像
     denoised_image = lab2rgb(lab_image)
@@ -52,7 +52,9 @@ def sgbnr_main(img,outpath,ab_mask_value=0,l_mask_value=0, kernel_l=1,kernel_a=1
     # 降噪，分离Lab通道进行处理
     denoised_image = apply_sgbnr_to_lab(image_float,  ab_mask_value=ab_mask_value, l_mask_value=l_mask_value,  kernel_l=kernel_l,kernel_a=kernel_a,kernel_b=kernel_b)
     # 保存降噪后的图像（可选）
-    denoised_image = np.uint16(denoised_image* 65535)
+    io.imsave(fr"{outpath}\output\鱼香肉丝.png", np.uint8(denoised_image*255))
+    denoised_image = np.uint16(denoised_image* 65535)  
     io.imsave(fr"{outpath}\output\鱼香肉丝.tif", denoised_image)
+
     print("已输出 鱼香肉丝.tif！")
     return denoised_image #后续接口

@@ -10,9 +10,9 @@ import os
 
 def choose_file():
     # 打开文件选择对话框，返回文件路径
+    shared.isselected = 1
     global file_path
     file_path = filedialog.askopenfilename()
-    print('B',file_path)
     print(file_path[-3:])
     if file_path[-3:] == 'tif':
         # 更新底部状态信息
@@ -22,18 +22,23 @@ def choose_file():
         exit()
 
 def start_operation():
+    if shared.isselected == 0 :
+        status_label.config(text="还未选择图像！")
+        return
     global file_path
     global outpath
+    print(file_path)
+    print(outpath)
     img =pull_main(file_path,outpath)
     factor = estb_main(img)
     agr1,*agr2 = fuzz_rule_main(factor)
     img = atwt_main(img,outpath,agr1)
     img = sgbnr_main(img,outpath,agr2[0],agr2[1],agr2[2],agr2[3],agr2[4])
+    shared.循环次数 = 1
 
 # 创建主窗口
 file_path = ""
 outpath = os.getcwd()
-print(outpath)
 frame = tk.Tk()
 frame.title("鱼香肉丝v0.1")
 frame.geometry("400x180")
@@ -48,7 +53,7 @@ start_button.place(x=60, y=80)
 s_label = tk.Label(frame, text="状态:  ")
 s_label.place(x=60, y=140)
 
-status_label = tk.Label(frame, text=shared.log)
+status_label = tk.Label(frame, text="未开始")
 status_label.place(x=110, y=140)
 
 # 运行主循环

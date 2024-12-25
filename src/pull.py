@@ -46,15 +46,15 @@ def pull_main(inpath,outpath):
     print("归一化数值是",归一化数值)
 
     #推算尾截点butt
-    gray_image = R/归一化数值 
-    img_255 = (gray_image * (BIN-1)).astype(np.uint8)
+    gray_image = R/归一化数值 #使用R通道作为拉伸评判
+    img_255 = (gray_image * (BIN-1)).astype(np.uint16)
     hist, bin_edges = np.histogram(img_255, bins=BIN, range=(0,BIN-1))
     peak = np.argmax(hist)
     print(hist)
-    print("peask is ",peak)
+    print("peask的索引值为: ",peak)
     tmp_1 = peak - 2
     while(True):
-        if  hist[tmp_1-1] < (hist[tmp_1]+ hist[tmp_1+1]+ hist[tmp_1+2])/3 and hist[tmp_1-1] > 0.002* hist[peak]:
+        if  hist[tmp_1-1] < (hist[tmp_1]+ hist[tmp_1+1]+ hist[tmp_1+2])/3 and hist[tmp_1-1] > 0.003* hist[peak]:
             tmp_1 = tmp_1 - 1
         else:
             break
@@ -65,13 +65,13 @@ def pull_main(inpath,outpath):
     切屁股的归一化R通道 = but(butt,gray_image)
 
     #推算中间点middle，先but后再推算
-    img_255 = (切屁股的归一化R通道 * (BIN-1)).astype(np.uint8)#获取255灰度图
+    img_255 = (切屁股的归一化R通道 * (BIN-1)).astype(np.uint16)#获取255灰度图
     hist, bin_edges = np.histogram(img_255, bins=BIN, range=(0, BIN-1))
     peak = np.argmax(hist)
-    tmp_2 = peak+1
+    tmp_2 = peak+10
     while(True):
-        if  hist[tmp_2+ 1] < (hist[tmp_2]+ hist[tmp_2-1])/2 and hist[tmp_2 + 1] > 0.005* hist[peak] and tmp_2+2 < BIN-1:
-            tmp_2 = tmp_2 + 1
+        if  hist[tmp_2+ 10] < (hist[tmp_2]+ hist[tmp_2-10])/2 and hist[tmp_2 + 10] > 0.02* hist[peak] and tmp_2+10 < BIN-1:
+            tmp_2 = tmp_2 + 10
         else:
             break
     middle = tmp_2/(BIN-1)
@@ -92,5 +92,5 @@ def pull_main(inpath,outpath):
     #还原RGB图像
     back_image = np.dstack((拉伸完毕的R通道,拉伸完毕的G通道,拉伸完毕的B通道))
     back_image = back_image.astype(np.float32)
-    io.imsave(fr"{outpath}\output\pull.tif", back_image)
+#    io.imsave(fr"{outpath}\output\pull.tif", back_image)
     return back_image
