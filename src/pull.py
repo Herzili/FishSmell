@@ -27,7 +27,7 @@ def pull_main(inpath,outpath):
     print("自动拉伸...")
     shared.log = "自动拉伸..."
     #可调参数
-    BIN = 2048  #最低支持12bit色深
+    BIN = 1024  #最低支持12bit色深
     归一化数值 = 1
     #分离RGB，获取图片格式情况。
     image = io.imread(fr"{inpath}")   #目前是numpy数组

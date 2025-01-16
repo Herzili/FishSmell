@@ -14,7 +14,7 @@ def choose_file():
     global file_path
     file_path = filedialog.askopenfilename()
     print(file_path[-3:])
-    if file_path[-3:] == 'tif':
+    if file_path[-3:] == 'tif'or file_path[-3:] == 'TIF':
         # 更新底部状态信息
         status_label.config(text="源图像已选择，点击处理")
     else :
@@ -34,10 +34,15 @@ def start_operation():
     agr1,*agr2 = fuzz_rule_main(factor)
     img = sgbnr_main(img,outpath,agr2[0],agr2[1],agr2[2],agr2[3],agr2[4])
     shared.循环次数 = 1
+    os.system("taskkill /f /im dllhost.exe")# 结束COM surrogate进程
+
 
 # 创建主窗口
 file_path = ""
-outpath = os.getcwd()
+workpath = os.getcwd()
+print('工作目录是',workpath)
+outpath = workpath[0:-4]
+print('输出路径是',outpath,'下的outpath文件夹')
 frame = tk.Tk()
 frame.title("鱼香肉丝v0.1")
 frame.geometry("400x180")
