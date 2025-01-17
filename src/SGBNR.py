@@ -52,9 +52,12 @@ def sgbnr_main(img,outpath,ab_mask_value=0,l_mask_value=0, kernel_l=1,kernel_a=1
     # 降噪，分离Lab通道进行处理
     denoised_image = apply_sgbnr_to_lab(image_float,  ab_mask_value=ab_mask_value, l_mask_value=l_mask_value,  kernel_l=kernel_l,kernel_a=kernel_a,kernel_b=kernel_b)
     # 保存降噪后的图像（可选）
-    io.imsave(fr"{outpath}\output\鱼香肉丝.png", np.uint8(denoised_image*255))
-    denoised_image = np.uint16(denoised_image* 65535)  
-    io.imsave(fr"{outpath}\output\鱼香肉丝.tif", denoised_image)
+    try:
+        io.imsave(fr"{outpath}\output\鱼香肉丝.png", np.uint8(denoised_image*255))
+        denoised_image = np.uint16(denoised_image* 65535)  
+        io.imsave(fr"{outpath}\output\鱼香肉丝.tif", denoised_image)
+    except:
+        print('\033[35mSGBNR.py: 输出路径有问题,稍后重试\033[37m')
 
     print("已输出 鱼香肉丝.tif！")
     return denoised_image #后续接口

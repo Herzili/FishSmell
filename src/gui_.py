@@ -35,13 +35,12 @@ def start_operation():
     img = sgbnr_main(img,outpath,agr2[0],agr2[1],agr2[2],agr2[3],agr2[4])
     shared.循环次数 = 1
     os.system("taskkill /f /im dllhost.exe")# 结束COM surrogate进程
-
+    print("kill COM surrogate 安全结束")
 
 # 创建主窗口
 file_path = ""
-workpath = os.getcwd()
-print('工作目录是',workpath)
-outpath = workpath[0:-4]
+outpath = os.getcwd()
+print('当前工作目录是',outpath)
 print('输出路径是',outpath,'下的outpath文件夹')
 frame = tk.Tk()
 frame.title("鱼香肉丝v0.1")

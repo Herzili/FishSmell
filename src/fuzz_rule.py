@@ -8,7 +8,7 @@ def fuzz_rule_main(l_var):
     LVAR = l_var
     # 亮度方差（0，20） 大于20的可以不用处理了。
     if (LVAR > 17):
-        print('\033[31m别勉强自己，这张图其实可以不用处理了(-  -)`')
+        print('\033[31m别勉强自己，这张图其实可以不用处理了(-  -)`\033[37m')#\033切换红色，然后再切回白色
         shared.循环次数 = 2
     l_var = ctrl.Antecedent(np.arange(0, 21, 1), 'l_var')
     #atwt的阈值（0，0.1）
@@ -59,7 +59,7 @@ def fuzz_rule_main(l_var):
     control_simulation2.compute() 
 
     # 9. 输出结果
-    print(f"\033[37matwt阈值为: {control_simulation1.output['t']:.4f}")
+    print(f"atwt阈值为: {control_simulation1.output['t']:.4f}")
     print(f"SGBNR蒙版值为: {control_simulation2.output['m']:.4f}")
 
     atwt_threshold = control_simulation1.output['t']
